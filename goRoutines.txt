@@ -1,0 +1,61 @@
+package main
+
+import "fmt"
+//import "time"
+
+func main(){
+  A:=[]int{1,2,3,4,5,6}
+  c1 :=make(chan int)
+  c2 :=make(chan int)
+  c3 :=make(chan int)
+  c4 :=make(chan int)
+  go add(A,c1)
+  go mull(A,c2)
+  go eesum(A,c3)
+  go oosum(A,c4)
+  a,b,c,d :=<-c1,<-c2,<-c3,<-c4
+ // time.Sleep(10*time.Second)
+  fmt.Println(a, b, c, d) 
+
+
+}
+
+func add (A []int,c1 chan int) {
+  var sum int
+  for _,v:= range(A) {
+     sum=sum+v
+  }
+  //fmt.Println(sum)
+  c1 <-sum
+}
+
+func mull (A []int,c2 chan int) {
+  var mul=1
+  for _,v:= range(A) {
+    mul=mul*v
+  }
+  //fmt.Println(mul)
+  c2<-mul
+}
+
+func eesum (A []int,c3 chan int) {
+  var esum int
+  for i,v:= range(A) {
+    if i%2 == 0{
+      esum=esum+v
+    }
+  }
+  //fmt.Println(esum)
+  c3 <- esum
+}
+
+func oosum (A []int,c4 chan int) {
+  var osum int
+  for i,v:= range(A) {
+    if i%2 != 0 {
+      osum=osum+v
+    }
+  }
+  //fmt.Println(osum)
+  c4 <- osum
+}
